@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Curso de Fundamentos Digitais</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: #333;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #2575fc;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            color: #6a11cb;
+            font-size: 1.2rem;
+        }
+
+        .container {
+            display: flex;
+            flex: 1;
+        }
+
+        .sidebar {
+            width: 250px;
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 20px;
+            overflow-y: auto;
+        }
+
+        .content {
+            flex: 1;
+            padding: 30px;
+            background-color: rgba(255, 255, 255, 0.95);
+            overflow-y: auto;
+        }
+
+        .menu-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #f0f4ff;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid #2575fc;
+            position: relative;
+        }
+
+        .menu-item:hover {
+            background-color: #e1e8ff;
+            transform: translateX(5px);
+        }
+
+        .menu-item.active {
+            background-color: #d4e1ff;
+            border-left: 4px solid #6a11cb;
+            font-weight: bold;
+        }
+
+        .menu-item.completed::after {
+            content: "✓";
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #4CAF50;
+            font-weight: bold;
+        }
+
+        .lesson-content {
+            display: none;
+        }
+
+        .lesson-content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        h2 {
+            color: #2575fc;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e1e8ff;
+            padding-bottom: 10px;
+        }
+
+        h3 {
+            color: #6a11cb;
+            margin: 15px 0 10px;
+        }
+
+        p {
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        .step {
+            background-color: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            border-left: 4px solid #6a11cb;
+        }
+
+        .highlight {
+            background-color: #fff9e6;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #ffcc00;
+            margin: 10px 0;
+        }
+
+        .tip {
+            background-color: #e6f7ff;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #1890ff;
+            margin: 10px 0;
+        }
+
+        .warning {
+            background-color: #fff2f0;
+            padding: 10px;
+            border-radius: 5px;
+            border-left: 4px solid #ff4d4f;
+            margin: 10px 0;
+        }
+
+        .btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            margin: 10px 5px;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn-complete {
+            background: linear-gradient(135deg, #4CAF50 0%, #45a049 100%);
+        }
+
+        .btn-voice {
+            background: linear-gradient(135deg, #FF5722 0%, #FF9800 100%);
+        }
+
+        .simulation {
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+        }
+
+        .keyboard {
+            display: grid;
+            grid-template-columns: repeat(10, 1fr);
+            gap: 5px;
+            margin: 15px 0;
+        }
+
+        .key {
+            background-color: #f0f0f0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            padding: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .key:hover {
+            background-color: #e0e0e0;
+        }
+
+        .key:active {
+            background-color: #d0d0d0;
+            transform: scale(0.95);
+        }
+
+        .voice-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            margin: 10px;
+            transition: all 0.3s;
+        }
+
+        .voice-btn:hover {
+            background-color: #45a049;
+            transform: scale(1.1);
+        }
+
+        .voice-btn.listening {
+            background-color: #f44336;
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+
+        .progress-container {
+            background-color: rgba(255, 255, 255, 0.9);
+            padding: 10px 20px;
+            text-align: center;
+            border-bottom: 1px solid #e1e8ff;
+        }
+
+        .progress-bar {
+            height: 10px;
+            background-color: #e1e8ff;
+            border-radius: 5px;
+            margin: 10px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .voice-status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 5px;
+            text-align: center;
+        }
+
+        .voice-status.listening {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+
+        .voice-status.error {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+
+        footer {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            font-size: 0.9rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .sidebar {
+                width: 100%;
+                max-height: 200px;
+            }
+            
+            .keyboard {
+                grid-template-columns: repeat(5, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Curso de Fundamentos Digitais</h1>
+        <p class="subtitle">Conceitos Básicos & Primeiros Passos para Inclusão Digital</p>
+    </header>
+
+    <div class="progress-container">
+        <p>Progresso do Curso: <span id="progress-percent">0%</span></p>
+        <div class="progress-bar">
+            <div class="progress-fill" id="progress-fill"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <div class="menu-item active" data-lesson="intro">Introdução</div>
+            <div class="menu-item" data-lesson="personalizacao">Personalização da Área de Trabalho</div>
+            <div class="menu-item" data-lesson="navegacao">Navegação Segura & E-mails</div>
+            <div class="menu-item" data-lesson="comunicacao">Comunicação & Redes Sociais</div>
+            <div class="menu-item" data-lesson="servicos">Serviços Públicos & Gov.br</div>
+            <div class="menu-item" data-lesson="compras">Compras Online & Transações</div>
+            <div class="menu-item" data-lesson="acessibilidade">Teclado Virtual & Comandos de Voz</div>
+        </div>
+
+        <div class="content">
+            <!-- Introdução -->
+            <div id="intro" class="lesson-content active">
+                <h2>Introdução aos Fundamentos Digitais</h2>
+                <p>Bem-vindo ao curso de Fundamentos Digitais! Este programa foi desenvolvido para ajudar você a dar os primeiros passos no mundo digital de forma simples e segura.</p>
+                
+                <div class="step">
+                    <h3>O que você vai aprender:</h3>
+                    <ul>
+                        <li>Como personalizar sua área de trabalho</li>
+                        <li>Navegar na internet com segurança</li>
+                        <li>Usar e-mail e redes sociais</li>
+                        <li>Acessar serviços públicos online</li>
+                        <li>Fazer compras online com segurança</li>
+                        <li>Utilizar recursos de acessibilidade</li>
+                    </ul>
+                </div>
+
+                <div class="tip">
+                    <p><strong>Dica:</strong> Não tenha pressa! Aprenda no seu ritmo e pratique sempre.</p>
+                </div>
+
+                <button class="btn" onclick="showLesson('personalizacao')">Começar o Curso</button>
+            </div>
+
+            <!-- Personalização da Área de Trabalho -->
+            <div id="personalizacao" class="lesson-content">
+                <h2>Personalização da Área de Trabalho</h2>
+                <p>A área de trabalho é a primeira coisa que você vê quando liga o computador. Vamos aprender a personalizá-la para deixá-la mais fácil de usar.</p>
+                
+                <h3>Como organizar seus ícones:</h3>
+                <ol>
+                    <li>Clique com o botão direito em qualquer espaço vazio da área de trabalho</li>
+                    <li>Selecione "Exibir"</li>
+                    <li>Escolha o tamanho dos ícones (Grande, Médio ou Pequeno)</li>
+                    <li>Arraste os ícones para organizá-los como preferir</li>
+                </ol>
+
+                <div class="simulation">
+                    <h3>Prática: Organize os ícones abaixo</h3>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <div style="padding: 15px; background: #e1e8ff; border-radius: 8px; cursor: move;">Meu Computador</div>
+                        <div style="padding: 15px; background: #e1e8ff; border-radius: 8px; cursor: move;">Documentos</div>
+                        <div style="padding: 15px; background: #e1e8ff; border-radius: 8px; cursor: move;">Lixeira</div>
+                        <div style="padding: 15px; background: #e1e8ff; border-radius: 8px; cursor: move;">Navegador</div>
+                    </div>
+                </div>
+
+                <div class="highlight">
+                    <p><strong>Lembrete:</strong> Uma área de trabalho organizada ajuda a encontrar os programas mais rapidamente.</p>
+                </div>
+
+                <button class="btn btn-complete" onclick="markAsCompleted('personalizacao')">Marcar como Concluída</button>
+                <button class="btn" onclick="showLesson('navegacao')">Próxima Lição</button>
+            </div>
+
+            <!-- Navegação Segura & E-mails -->
+            <div id="navegacao" class="lesson-content">
+                <h2>Navegação Segura & Uso de E-mails</h2>
+                <p>Aprender a navegar na internet com segurança é fundamental para proteger suas informações.</p>
+                
+                <h3>Dicas para navegação segura:</h3>
+                <ul>
+                    <li>Verifique se o site tem "https://" no início do endereço</li>
+                    <li>Não clique em links suspeitos em e-mails</li>
+                    <li>Use senhas fortes e diferentes para cada site</li>
+                    <li>Mantenha seu antivírus atualizado</li>
+                </ul>
+
+                <h3>Como criar um e-mail:</h3>
+                <ol>
+                    <li>Acesse um provedor de e-mail (Gmail, Outlook, etc.)</li>
+                    <li>Clique em "Criar conta"</li>
+                    <li>Preencha suas informações pessoais</li>
+                    <li>Escolha um nome de usuário e senha</li>
+                    <li>Verifique sua conta seguindo as instruções</li>
+                </ol>
+
+                <div class="warning">
+                    <p><strong>Atenção:</strong> Nunca compartilhe sua senha com ninguém e desconfie de e-mails pedindo informações pessoais.</p>
+                </div>
+
+                <button class="btn btn-complete" onclick="markAsCompleted('navegacao')">Marcar como Concluída</button>
+                <button class="btn" onclick="showLesson('comunicacao')">Próxima Lição</button>
+            </div>
+
+            <!-- Comunicação & Redes Sociais -->
+            <div id="comunicacao" class="lesson-content">
+                <h2>Comunicação & Redes Sociais</h2>
+                <p>As redes sociais são ótimas para se conectar com amigos e familiares, mas é importante usá-las com cuidado.</p>
+                
+                <h3>Principais redes sociais:</h3>
+                <ul>
+                    <li><strong>Facebook:</strong> Para conectar com amigos e familiares</li>
+                    <li><strong>WhatsApp:</strong> Para mensagens instantâneas</li>
+                    <li><strong>Instagram:</strong> Para compartilhar fotos e vídeos</li>
+                    <li><strong>YouTube:</strong> Para assistir e compartilhar vídeos</li>
+                </ul>
+
+                <h3>Dicas de segurança nas redes sociais:</h3>
+                <ul>
+                    <li>Ajuste as configurações de privacidade</li>
+                    <li>Pense antes de postar - uma vez online, é difícil remover</li>
+                    <li>Não aceite amizades de desconhecidos</li>
+                    <li>Cuidado com informações pessoais que você compartilha</li>
+                </ul>
+
+                <div class="tip">
+                    <p><strong>Dica:</strong> Use as redes sociais para manter contato, mas lembre-se de que o mundo real também é importante!</p>
+                </div>
+
+                <button class="btn btn-complete" onclick="markAsCompleted('comunicacao')">Marcar como Concluída</button>
+                <button class="btn" onclick="showLesson('servicos')">Próxima Lição</button>
+            </div>
+
+            <!-- Serviços Públicos & Gov.br -->
+            <div id="servicos" class="lesson-content">
+                <h2>Serviços Públicos & Gov.br</h2>
+                <p>Muitos serviços públicos podem ser acessados online pelo site gov.br, facilitando sua vida.</p>
+                
+                <h3>Como acessar o gov.br:</h3>
+                <ol>
+                    <li>Acesse o site <strong>gov.br</strong></li>
+                    <li>Clique em "Entrar"</li>
+                    <li>Se você já tem cadastro, faça login</li>
+                    <li>Se não tem, clique em "Cadastrar" e siga as instruções</li>
+                </ol>
+
+                <h3>Serviços disponíveis no gov.br:</h3>
+                <ul>
+                    <li>Emitir documentos como CPF e certidões</li>
+                    <li>Consultar e pagar impostos</li>
+                    <li>Acessar serviços do INSS</li>
+                    <li>Agendar atendimentos em órgãos públicos</li>
+                    <li>Consultar processos judiciais</li>
+                </ul>
+
+                <div class="highlight">
+                    <p><strong>Vantagem:</strong> Acessar serviços públicos online economiza tempo e evita filas.</p>
+                </div>
+
+                <button class="btn btn-complete" onclick="markAsCompleted('servicos')">Marcar como Concluída</button>
+                <button class="btn" onclick="showLesson('compras')">Próxima Lição</button>
+            </div>
+
+            <!-- Compras Online & Transações -->
+            <div id="compras" class="lesson-content">
+                <h2>Compras Online & Transações Seguras</h2>
+                <p>Fazer compras online é conveniente, mas é importante tomar alguns cuidados para proteger seu dinheiro.</p>
+                
+                <h3>Como fazer compras online com segurança:</h3>
+                <ol>
+                    <li>Escolha lojas conhecidas e confiáveis</li>
+                    <li>Verifique se o site é seguro (procure o cadeado no navegador)</li>
+                    <li>Leia avaliações de outros clientes</li>
+                    <li>Confirme os prazos de entrega e políticas de devolução</li>
+                    <li>Use cartão de crédito virtual ou PayPal para maior segurança</li>
+                </ol>
+
+                <h3>O que NÃO fazer em compras online:</h3>
+                <ul>
+                    <li>Não compre em sites desconhecidos</li>
+                    <li>Não forneça mais informações do que o necessário</li>
+                    <li>Não salve dados do cartão em sites não confiáveis</li>
+                    <li>Não clique em links suspeitos de "ofertas imperdíveis"</li>
+                </ul>
+
+                <div class="warning">
+                    <p><strong>Atenção:</strong> Se uma oferta parece boa demais para ser verdade, provavelmente é!</p>
+                </div>
+
+                <button class="btn btn-complete" onclick="markAsCompleted('compras')">Marcar como Concluída</button>
+                <button class="btn" onclick="showLesson('acessibilidade')">Próxima Lição</button>
+            </div>
+
+            <!-- Teclado Virtual & Comandos de Voz -->
+            <div id="acessibilidade" class="lesson-content">
+                <h2>Teclado Virtual & Comandos de Voz</h2>
+                <p>Recursos de acessibilidade tornam o computador mais fácil de usar para todos.</p>
+                
+                <h3>Teclado Virtual:</h3>
+                <p>O teclado virtual é útil quando:</p>
+                <ul>
+                    <li>Seu teclado físico não está funcionando</li>
+                    <li>Você precisa digitar em outro idioma</li>
+                    <li>Prefere usar o mouse para digitar</li>
+                </ul>
+
+                <div class="simulation">
+                    <h3>Prática: Teclado Virtual</h3>
+                    <input type="text" id="virtual-input" placeholder="Clique nas teclas para digitar" style="width: 100%; padding: 10px; margin-bottom: 15px;">
+                    <div class="keyboard">
+                        <!-- Linha 1 -->
+                        <div class="key" onclick="typeKey('1')">1</div>
+                        <div class="key" onclick="typeKey('2')">2</div>
+                        <div class="key" onclick="typeKey('3')">3</div>
+                        <div class="key" onclick="typeKey('4')">4</div>
+                        <div class="key" onclick="typeKey('5')">5</div>
+                        <div class="key" onclick="typeKey('6')">6</div>
+                        <div class="key" onclick="typeKey('7')">7</div>
+                        <div class="key" onclick="typeKey('8')">8</div>
+                        <div class="key" onclick="typeKey('9')">9</div>
+                        <div class="key" onclick="typeKey('0')">0</div>
+                        
+                        <!-- Linha 2 -->
+                        <div class="key" onclick="typeKey('Q')">Q</div>
+                        <div class="key" onclick="typeKey('W')">W</div>
+                        <div class="key" onclick="typeKey('E')">E</div>
+                        <div class="key" onclick="typeKey('R')">R</div>
+                        <div class="key" onclick="typeKey('T')">T</div>
+                        <div class="key" onclick="typeKey('Y')">Y</div>
+                        <div class="key" onclick="typeKey('U')">U</div>
+                        <div class="key" onclick="typeKey('I')">I</div>
+                        <div class="key" onclick="typeKey('O')">O</div>
+                        <div class="key" onclick="typeKey('P')">P</div>
+                        
+                        <!-- Linha 3 -->
+                        <div class="key" onclick="typeKey('A')">A</div>
+                        <div class="key" onclick="typeKey('S')">S</div>
+                        <div class="key" onclick="typeKey('D')">D</div>
+                        <div class="key" onclick="typeKey('F')">F</div>
+                        <div class="key" onclick="typeKey('G')">G</div>
+                        <div class="key" onclick="typeKey('H')">H</div>
+                        <div class="key" onclick="typeKey('J')">J</div>
+                        <div class="key" onclick="typeKey('K')">K</div>
+                        <div class="key" onclick="typeKey('L')">L</div>
+                        <div class="key" onclick="backspace()">⌫</div>
+                        
+                        <!-- Linha 4 -->
+                        <div class="key" onclick="typeKey('Z')">Z</div>
+                        <div class="key" onclick="typeKey('X')">X</div>
+                        <div class="key" onclick="typeKey('C')">C</div>
+                        <div class="key" onclick="typeKey('V')">V</div>
+                        <div class="key" onclick="typeKey('B')">B</div>
+                        <div class="key" onclick="typeKey('N')">N</div>
+                        <div class="key" onclick="typeKey('M')">M</div>
+                        <div class="key" onclick="typeKey(',')">,</div>
+                        <div class="key" onclick="typeKey('.')">.</div>
+                        <div class="key" onclick="typeKey(' ')">Espaço</div>
+                    </div>
+                </div>
+
+                <h3>Comandos de Voz:</h3>
+                <p>Os comandos de voz permitem controlar o computador falando, o que é útil para pessoas com dificuldades motoras ou que preferem essa forma de interação.</p>
+
+                <div class="simulation">
+                    <h3>Prática: Comandos de Voz</h3>
+                    <button id="voice-btn" class="voice-btn" onclick="toggleVoiceRecognition()">🎤 Clique para falar</button>
+                    <div id="voice-status" class="voice-status">
+                        Clique no botão e comece a falar
+                    </div>
+                    <p id="voice-output" style="margin-top: 15px; min-height: 60px; padding: 10px; background: #f5f5f5; border-radius: 5px;">
+                        O que você disser aparecerá aqui...
+                    </p>
+                    <button class="btn btn-voice" onclick="clearVoiceOutput()">Limpar Texto</button>
+                </div>
+
+                <div class="tip">
+                    <p><strong>Dica:</strong> No Windows, você pode ativar o reconhecimento de voz indo em Configurações > Acessibilidade > Fala.</p>
+                </div>
+
+                <button class="btn btn-complete" onclick="markAsCompleted('acessibilidade')">Marcar como Concluída</button>
+                <button class="btn" onclick="showLesson('intro')">Voltar ao Início</button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Curso de Fundamentos Digitais - Projeto de Inclusão Digital</p>
+        <p><small>Este curso funciona completamente offline. Seu progresso é salvo automaticamente.</small></p>
+    </footer>
+
+    <script>
+        // Sistema de progresso usando localStorage
+        const TOTAL_LESSONS = 6; // Excluindo a introdução
+        let completedLessons = JSON.parse(localStorage.getItem('completedLessons')) || [];
+
+        // Sistema de reconhecimento de voz
+        let recognition;
+        let isListening = false;
+
+        // Verificar suporte a reconhecimento de voz
+        function initializeVoiceRecognition() {
+            if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
+                const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+                recognition = new SpeechRecognition();
+                recognition.continuous = false;
+                recognition.interimResults = false;
+                recognition.lang = 'pt-BR';
+
+                recognition.onstart = function() {
+                    isListening = true;
+                    updateVoiceUI('listening', 'Ouvindo... Fale agora!');
+                };
+
+                recognition.onresult = function(event) {
+                    const transcript = event.results[0][0].transcript;
+                    document.getElementById('voice-output').textContent = transcript;
+                    updateVoiceUI('success', 'Fala reconhecida com sucesso!');
+                };
+
+                recognition.onerror = function(event) {
+                    updateVoiceUI('error', 'Erro: ' + event.error);
+                    isListening = false;
+                };
+
+                recognition.onend = function() {
+                    isListening = false;
+                    if (document.getElementById('voice-status').className !== 'voice-status error') {
+                        updateVoiceUI('idle', 'Clique no botão e comece a falar');
+                    }
+                };
+            } else {
+                document.getElementById('voice-status').textContent = 'Seu navegador não suporta reconhecimento de voz. Tente usar Chrome ou Edge.';
+                document.getElementById('voice-status').className = 'voice-status error';
+                document.getElementById('voice-btn').disabled = true;
+            }
+        }
+
+        // Atualizar interface de voz
+        function updateVoiceUI(status, message) {
+            const statusElement = document.getElementById('voice-status');
+            const button = document.getElementById('voice-btn');
+            
+            statusElement.textContent = message;
+            statusElement.className = 'voice-status';
+            
+            if (status === 'listening') {
+                statusElement.classList.add('listening');
+                button.classList.add('listening');
+                button.textContent = '🎤 Ouvindo...';
+            } else if (status === 'success') {
+                button.classList.remove('listening');
+                button.textContent = '🎤 Clique para falar';
+            } else if (status === 'error') {
+                statusElement.classList.add('error');
+                button.classList.remove('listening');
+                button.textContent = '🎤 Clique para falar';
+            } else {
+                button.classList.remove('listening');
+                button.textContent = '🎤 Clique para falar';
+            }
+        }
+
+        // Alternar reconhecimento de voz
+        function toggleVoiceRecognition() {
+            if (!recognition) {
+                updateVoiceUI('error', 'Reconhecimento de voz não inicializado.');
+                return;
+            }
+
+            if (isListening) {
+                recognition.stop();
+                isListening = false;
+            } else {
+                try {
+                    recognition.start();
+                } catch (error) {
+                    updateVoiceUI('error', 'Erro ao iniciar reconhecimento: ' + error.message);
+                }
+            }
+        }
+
+        // Limpar saída de voz
+        function clearVoiceOutput() {
+            document.getElementById('voice-output').textContent = 'O que você disser aparecerá aqui...';
+        }
+
+        // Inicializar progresso
+        function initializeProgress() {
+            updateProgressBar();
+            updateMenuItems();
+        }
+
+        // Atualizar barra de progresso
+        function updateProgressBar() {
+            const progress = (completedLessons.length / TOTAL_LESSONS) * 100;
+            document.getElementById('progress-fill').style.width = `${progress}%`;
+            document.getElementById('progress-percent').textContent = `${Math.round(progress)}%`;
+        }
+
+        // Atualizar itens do menu
+        function updateMenuItems() {
+            document.querySelectorAll('.menu-item').forEach(item => {
+                const lessonId = item.getAttribute('data-lesson');
+                if (completedLessons.includes(lessonId)) {
+                    item.classList.add('completed');
+                } else {
+                    item.classList.remove('completed');
+                }
+            });
+        }
+
+        // Marcar lição como concluída
+        function markAsCompleted(lessonId) {
+            if (!completedLessons.includes(lessonId)) {
+                completedLessons.push(lessonId);
+                localStorage.setItem('completedLessons', JSON.stringify(completedLessons));
+                updateProgressBar();
+                updateMenuItems();
+                
+                // Mostrar mensagem de sucesso
+                alert('Lição marcada como concluída! Seu progresso foi salvo.');
+            }
+        }
+
+        // Função para mostrar lições
+        function showLesson(lessonId) {
+            // Esconder todas as lições
+            document.querySelectorAll('.lesson-content').forEach(lesson => {
+                lesson.classList.remove('active');
+            });
+            
+            // Mostrar a lição selecionada
+            document.getElementById(lessonId).classList.add('active');
+            
+            // Atualizar menu ativo
+            document.querySelectorAll('.menu-item').forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('data-lesson') === lessonId) {
+                    item.classList.add('active');
+                }
+            });
+        }
+
+        // Configurar eventos do menu
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('click', function() {
+                showLesson(this.getAttribute('data-lesson'));
+            });
+        });
+
+        // Funções para o teclado virtual
+        function typeKey(key) {
+            const input = document.getElementById('virtual-input');
+            input.value += key;
+        }
+
+        function backspace() {
+            const input = document.getElementById('virtual-input');
+            input.value = input.value.slice(0, -1);
+        }
+
+        // Inicializar quando a página carregar
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeProgress();
+            initializeVoiceRecognition();
+        });
+    </script>
+</body>
+</html>
