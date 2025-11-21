@@ -295,6 +295,124 @@
             font-size: 0.9rem;
         }
 
+        /* Estilos para o Quiz */
+        .quiz-container {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .question {
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e1e8ff;
+        }
+
+        .question h3 {
+            color: #2575fc;
+            margin-bottom: 15px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option {
+            padding: 12px 15px;
+            background-color: #f0f4ff;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid transparent;
+        }
+
+        .option:hover {
+            background-color: #e1e8ff;
+        }
+
+        .option.selected {
+            border-color: #2575fc;
+            background-color: #d4e1ff;
+        }
+
+        .option.correct {
+            border-color: #4CAF50;
+            background-color: #e8f5e9;
+        }
+
+        .option.incorrect {
+            border-color: #f44336;
+            background-color: #ffebee;
+        }
+
+        .feedback {
+            margin-top: 15px;
+            padding: 15px;
+            border-radius: 5px;
+            display: none;
+        }
+
+        .feedback.correct {
+            background-color: #e8f5e9;
+            border-left: 4px solid #4CAF50;
+            color: #2e7d32;
+        }
+
+        .feedback.incorrect {
+            background-color: #ffebee;
+            border-left: 4px solid #f44336;
+            color: #c62828;
+        }
+
+        .quiz-result {
+            text-align: center;
+            padding: 30px;
+            border-radius: 10px;
+            margin: 20px 0;
+            display: none;
+        }
+
+        .quiz-result.success {
+            background-color: #e8f5e9;
+            border: 2px solid #4CAF50;
+        }
+
+        .quiz-result.fail {
+            background-color: #ffebee;
+            border: 2px solid #f44336;
+        }
+
+        .quiz-result h2 {
+            color: #2575fc;
+            margin-bottom: 15px;
+        }
+
+        .quiz-result p {
+            margin-bottom: 15px;
+        }
+
+        .score {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 15px 0;
+        }
+
+        .score.high {
+            color: #4CAF50;
+        }
+
+        .score.medium {
+            color: #FF9800;
+        }
+
+        .score.low {
+            color: #f44336;
+        }
+
         /* Responsividade */
         @media (max-width: 768px) {
             .container {
@@ -308,6 +426,14 @@
             
             .keyboard {
                 grid-template-columns: repeat(5, 1fr);
+            }
+            
+            .options {
+                gap: 8px;
+            }
+            
+            .option {
+                padding: 10px 12px;
             }
         }
     </style>
@@ -334,6 +460,7 @@
             <div class="menu-item" data-lesson="servicos">Serviços Públicos & Gov.br</div>
             <div class="menu-item" data-lesson="compras">Compras Online & Transações</div>
             <div class="menu-item" data-lesson="acessibilidade">Teclado Virtual & Comandos de Voz</div>
+            <div class="menu-item" data-lesson="quiz">Quiz Final</div>
         </div>
 
         <div class="content">
@@ -598,7 +725,117 @@
                 </div>
 
                 <button class="btn btn-complete" onclick="markAsCompleted('acessibilidade')">Marcar como Concluída</button>
-                <button class="btn" onclick="showLesson('intro')">Voltar ao Início</button>
+                <button class="btn" onclick="showLesson('quiz')">Fazer Quiz Final</button>
+            </div>
+
+            <!-- Quiz Final -->
+            <div id="quiz" class="lesson-content">
+                <h2>Quiz Final - Teste Seus Conhecimentos</h2>
+                <p>Agora é hora de testar o que você aprendeu! Responda as perguntas abaixo para verificar seu conhecimento sobre os fundamentos digitais.</p>
+                
+                <div class="quiz-container">
+                    <div class="question" id="question1">
+                        <h3>1. Qual é a indicação visual de que um site é seguro para fazer compras online?</h3>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 'q1')">A) O site tem muitas imagens coloridas</div>
+                            <div class="option" onclick="selectOption(this, 'q1')">B) O endereço começa com "https://" e tem um cadeado</div>
+                            <div class="option" onclick="selectOption(this, 'q1')">C) O site tem muitas animações</div>
+                            <div class="option" onclick="selectOption(this, 'q1')">D) O site carrega rapidamente</div>
+                        </div>
+                        <div class="feedback correct" id="feedback-q1-correct">
+                            <p><strong>Parabéns!</strong> A resposta correta é a B. O "https://" e o cadeado indicam que a conexão é criptografada e segura para transações.</p>
+                        </div>
+                        <div class="feedback incorrect" id="feedback-q1-incorrect">
+                            <p><strong>Quase lá!</strong> A resposta correta é a B. O "https://" e o cadeado no navegador indicam que a conexão é criptografada e segura para transações online.</p>
+                        </div>
+                    </div>
+
+                    <div class="question" id="question2">
+                        <h3>2. Qual destas NÃO é uma boa prática de segurança em redes sociais?</h3>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 'q2')">A) Ajustar as configurações de privacidade</div>
+                            <div class="option" onclick="selectOption(this, 'q2')">B) Aceitar amizades apenas de pessoas que você conhece</div>
+                            <div class="option" onclick="selectOption(this, 'q2')">C) Compartilhar sua localização em tempo real com todos</div>
+                            <div class="option" onclick="selectOption(this, 'q2')">D) Pensar antes de postar informações pessoais</div>
+                        </div>
+                        <div class="feedback correct" id="feedback-q2-correct">
+                            <p><strong>Excelente!</strong> A resposta correta é a C. Compartilhar sua localização em tempo real com todos pode representar um risco à sua segurança.</p>
+                        </div>
+                        <div class="feedback incorrect" id="feedback-q2-incorrect">
+                            <p><strong>Vamos revisar!</strong> A resposta correta é a C. Compartilhar sua localização em tempo real com todos pode representar um risco à sua segurança pessoal.</p>
+                        </div>
+                    </div>
+
+                    <div class="question" id="question3">
+                        <h3>3. Qual é a principal vantagem de acessar serviços públicos pelo site gov.br?</h3>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 'q3')">A) É mais divertido que ir pessoalmente</div>
+                            <div class="option" onclick="selectOption(this, 'q3')">B) Economiza tempo e evita filas</div>
+                            <div class="option" onclick="selectOption(this, 'q3')">C) Permite pagar menos pelos serviços</div>
+                            <div class="option" onclick="selectOption(this, 'q3')">D) Não precisa de internet para acessar</div>
+                        </div>
+                        <div class="feedback correct" id="feedback-q3-correct">
+                            <p><strong>Muito bem!</strong> A resposta correta é a B. Acessar serviços públicos online economiza tempo e evita filas nos órgãos públicos.</p>
+                        </div>
+                        <div class="feedback incorrect" id="feedback-q3-incorrect">
+                            <p><strong>Quase acertou!</strong> A resposta correta é a B. A principal vantagem de acessar serviços públicos online é economizar tempo e evitar filas.</p>
+                        </div>
+                    </div>
+
+                    <div class="question" id="question4">
+                        <h3>4. O que você deve fazer se receber um e-mail de um banco pedindo sua senha?</h3>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 'q4')">A) Responder imediatamente com a senha</div>
+                            <div class="option" onclick="selectOption(this, 'q4')">B) Encaminhar para amigos para alertá-los</div>
+                            <div class="option" onclick="selectOption(this, 'q4')">C) Ignorar e excluir o e-mail</div>
+                            <div class="option" onclick="selectOption(this, 'q4')">D) Ligar para o banco para confirmar</div>
+                        </div>
+                        <div class="feedback correct" id="feedback-q4-correct">
+                            <p><strong>Perfeito!</strong> A resposta correta é a C. Bancos legítimos nunca pedem senhas por e-mail. Essas mensagens são golpes e devem ser ignoradas e excluídas.</p>
+                        </div>
+                        <div class="feedback incorrect" id="feedback-q4-incorrect">
+                            <p><strong>Cuidado!</strong> A resposta correta é a C. Bancos legítimos nunca pedem senhas por e-mail. Essas mensagens são golpes (phishing) e devem ser ignoradas e excluídas.</p>
+                        </div>
+                    </div>
+
+                    <div class="question" id="question5">
+                        <h3>5. Para que serve o teclado virtual no computador?</h3>
+                        <div class="options">
+                            <div class="option" onclick="selectOption(this, 'q5')">A) Substituir o mouse em todas as situações</div>
+                            <div class="option" onclick="selectOption(this, 'q5')">B) Digitar quando o teclado físico não funciona</div>
+                            <div class="option" onclick="selectOption(this, 'q5')">C) Aumentar a velocidade de digitação</div>
+                            <div class="option" onclick="selectOption(this, 'q5')">D) Jogar games com mais precisão</div>
+                        </div>
+                        <div class="feedback correct" id="feedback-q5-correct">
+                            <p><strong>Correto!</strong> A resposta correta é a B. O teclado virtual é útil quando o teclado físico não está funcionando ou para pessoas com dificuldades motoras.</p>
+                        </div>
+                        <div class="feedback incorrect" id="feedback-q5-incorrect">
+                            <p><strong>Vamos lembrar!</strong> A resposta correta é a B. O teclado virtual é uma ferramenta de acessibilidade útil quando o teclado físico não está funcionando ou para pessoas com dificuldades motoras.</p>
+                        </div>
+                    </div>
+
+                    <button class="btn" onclick="checkQuiz()" style="margin-top: 20px;">Verificar Respostas</button>
+                    <button class="btn" onclick="resetQuiz()" style="margin-top: 20px;">Reiniciar Quiz</button>
+                </div>
+
+                <div class="quiz-result success" id="quiz-success">
+                    <h2>🎉 Parabéns! 🎉</h2>
+                    <p>Você demonstrou um excelente entendimento dos conceitos de fundamentos digitais!</p>
+                    <p class="score high" id="success-score"></p>
+                    <p>Continue praticando e explorando o mundo digital com segurança!</p>
+                    <button class="btn" onclick="showLesson('intro')">Voltar ao Início</button>
+                </div>
+
+                <div class="quiz-result fail" id="quiz-fail">
+                    <h2>Quase lá! Continue Aprendendo</h2>
+                    <p>Você acertou <span id="correct-answers">0</span> de 5 questões.</p>
+                    <p class="score" id="fail-score"></p>
+                    <p>Revise as lições e tente novamente. O importante é continuar aprendendo!</p>
+                    <button class="btn" onclick="showLesson('intro')">Revisar Lições</button>
+                    <button class="btn" onclick="resetQuiz()">Tentar Novamente</button>
+                </div>
+
+                <button class="btn btn-complete" onclick="markAsCompleted('quiz')">Marcar Quiz como Concluído</button>
             </div>
         </div>
     </div>
@@ -606,11 +843,12 @@
     <footer>
         <p>Curso de Fundamentos Digitais - Projeto de Inclusão Digital</p>
         <p><small>Este curso funciona completamente offline. Seu progresso é salvo automaticamente.</small></p>
+        <p><small>Desenvolvido por Eduardo Matos RU: 3838064</small></p>
     </footer>
 
     <script>
         // Sistema de progresso usando localStorage
-        const TOTAL_LESSONS = 6; // Excluindo a introdução
+        const TOTAL_LESSONS = 7; // Incluindo o quiz
         let completedLessons = JSON.parse(localStorage.getItem('completedLessons')) || [];
 
         // Sistema de reconhecimento de voz
@@ -777,6 +1015,129 @@
         function backspace() {
             const input = document.getElementById('virtual-input');
             input.value = input.value.slice(0, -1);
+        }
+
+        // Sistema do Quiz
+        const correctAnswers = {
+            q1: 1, // B
+            q2: 2, // C
+            q3: 1, // B
+            q4: 2, // C
+            q5: 1  // B
+        };
+
+        let selectedOptions = {
+            q1: null,
+            q2: null,
+            q3: null,
+            q4: null,
+            q5: null
+        };
+
+        function selectOption(optionElement, questionId) {
+            // Remover seleção anterior nesta questão
+            const questionContainer = optionElement.parentElement.parentElement;
+            const options = questionContainer.querySelectorAll('.option');
+            options.forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // Marcar a opção selecionada
+            optionElement.classList.add('selected');
+            
+            // Armazenar a opção selecionada
+            const optionIndex = Array.from(options).indexOf(optionElement);
+            selectedOptions[questionId] = optionIndex;
+            
+            // Esconder feedbacks anteriores
+            hideAllFeedbacks();
+        }
+
+        function hideAllFeedbacks() {
+            document.querySelectorAll('.feedback').forEach(feedback => {
+                feedback.style.display = 'none';
+            });
+        }
+
+        function checkQuiz() {
+            let correctCount = 0;
+            
+            // Verificar cada questão
+            for (const questionId in correctAnswers) {
+                const correctIndex = correctAnswers[questionId];
+                const selectedIndex = selectedOptions[questionId];
+                
+                if (selectedIndex === null) {
+                    // Questão não respondida
+                    continue;
+                }
+                
+                const questionContainer = document.getElementById(`question${questionId.substring(1)}`);
+                const options = questionContainer.querySelectorAll('.option');
+                
+                if (selectedIndex === correctIndex) {
+                    // Resposta correta
+                    correctCount++;
+                    options[selectedIndex].classList.add('correct');
+                    document.getElementById(`feedback-${questionId}-correct`).style.display = 'block';
+                } else {
+                    // Resposta incorreta
+                    options[selectedIndex].classList.add('incorrect');
+                    options[correctIndex].classList.add('correct');
+                    document.getElementById(`feedback-${questionId}-incorrect`).style.display = 'block';
+                }
+            }
+            
+            // Mostrar resultado
+            const percentage = (correctCount / 5) * 100;
+            
+            if (correctCount >= 4) {
+                // Sucesso
+                document.getElementById('quiz-success').style.display = 'block';
+                document.getElementById('quiz-fail').style.display = 'none';
+                document.getElementById('success-score').textContent = `Você acertou ${correctCount} de 5 questões (${percentage}%)`;
+                
+                if (percentage >= 90) {
+                    document.getElementById('success-score').className = 'score high';
+                } else if (percentage >= 70) {
+                    document.getElementById('success-score').className = 'score medium';
+                }
+            } else {
+                // Precisa melhorar
+                document.getElementById('quiz-success').style.display = 'none';
+                document.getElementById('quiz-fail').style.display = 'block';
+                document.getElementById('correct-answers').textContent = correctCount;
+                document.getElementById('fail-score').textContent = `Sua pontuação: ${percentage}%`;
+                
+                if (percentage >= 50) {
+                    document.getElementById('fail-score').className = 'score medium';
+                } else {
+                    document.getElementById('fail-score').className = 'score low';
+                }
+            }
+        }
+
+        function resetQuiz() {
+            // Limpar seleções
+            selectedOptions = {
+                q1: null,
+                q2: null,
+                q3: null,
+                q4: null,
+                q5: null
+            };
+            
+            // Limpar estilos das opções
+            document.querySelectorAll('.option').forEach(option => {
+                option.classList.remove('selected', 'correct', 'incorrect');
+            });
+            
+            // Esconder feedbacks
+            hideAllFeedbacks();
+            
+            // Esconder resultados
+            document.getElementById('quiz-success').style.display = 'none';
+            document.getElementById('quiz-fail').style.display = 'none';
         }
 
         // Inicializar quando a página carregar
